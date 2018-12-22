@@ -17,8 +17,16 @@ data <- read.csv("EU_pop.csv", sep=";")
 shinyServer(function(input, output) {
   
   output$plot <- renderPlot({
-      data2 <- data %>% arrange(desc(World)) %>% slice(1:input$numOfCountries)
-      p<-ggplot(data=data2, aes(x=data2$Country, y=data2$Population)) +
+      
+      if (input$country != "All"){
+          data <- data[data$Country == input$country,]
+      }
+      
+      data <- data %>% arrange(desc(World)) %>% slice(1:input$numOfCountries)
+      
+      p<-ggplot(data=data, aes(x=data$Country, y=data$Population/1000)) +
+          xlab("Country") +
+          ylab("Population (K)") +
           geom_bar(stat="identity", fill="steelblue") +
           theme_minimal()
       p
@@ -26,6 +34,11 @@ shinyServer(function(input, output) {
   })
   
   output$table <- renderDataTable({
+      
+      if (input$country != "All"){
+          data <- data[data$Country == input$country,]
+      }
+      
       data %>% slice(1:input$numOfCountries)
   })
   

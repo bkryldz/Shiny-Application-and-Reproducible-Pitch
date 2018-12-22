@@ -8,7 +8,6 @@
 #
 
 library(shiny)
-library(dplyr)
 
 data <- read.csv("EU_pop.csv", sep=";")
 
@@ -21,7 +20,13 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-        selectInput("country", "Select a country: ", data$Country),
+        selectInput("country", "Select a country: ", choices = c("All", "Germany","U.K.","France","Italy",
+                                                                 "Spain","Poland","Romania","Netherlands",
+                                                                 "Belgium","Greece","Czech Republic",
+                                                                 "Portugal","Sweden","Hungary","Austria",
+                                                                 "Bulgaria","Denmark","Finland","Slovakia",
+                                                                 "Ireland","Croatia","Lithuania","Slovenia",
+                                                                 "Latvia","Estonia","Cyprus","Luxembourg","Malta"), selected = "All"),
         sliderInput("numOfCountries", "Number of countries to show: ",
                     min = 1, max=nrow(data), value=10, step = 1)
     ),
